@@ -1,6 +1,6 @@
-# Bridgerland M&M Game
+# Bridgerland Skittle Game
 ## This is a shiny app that lets students interact with the screen to build 
-## graphs with M&M candies.
+## graphs with Skittles candies.
 
 # Load the shiny library
 library(shiny)
@@ -23,25 +23,17 @@ ui <- fluidPage(
          }
          ')
   ),
-  titlePanel("M&M Colors"),
+  titlePanel("Skittles Colors"),
   sidebarLayout(position = "right",
     sidebarPanel(
-      h2("Add an M&M", align = "center"),
+      h2("Add a Skittle", align = "center"),
       fluidRow(
         column(3, id="buttons",
-               actionButton("subtract_brown", "", width = '100%', icon = icon("minus", lib = "font-awesome"))),
+               actionButton("subtract_orange", "", width = '100%', icon = icon("minus", lib = "font-awesome"))),
         column(5, id="buttons",
-               h3("Brown", align = "center")),
+               h3("Orange", align = "center")),
         column(3, id="buttons",
-               actionButton("add_brown", "", width = '100%', icon = icon("plus", lib = "font-awesome")))
-      ),
-      fluidRow(
-        column(3, id="buttons",
-               actionButton("subtract_red", "", width = '100%', icon = icon("minus", lib = "font-awesome"))),
-        column(5, id="buttons",
-               h3("Red", align = "center")),
-        column(3, id="buttons",
-               actionButton("add_red", "", width = '100%', icon = icon("plus", lib = "font-awesome")))
+               actionButton("add_orange", "", width = '100%', icon = icon("plus", lib = "font-awesome")))
       ),
       fluidRow(
         column(3, id="buttons",
@@ -53,14 +45,6 @@ ui <- fluidPage(
       ),
       fluidRow(
         column(3, id="buttons",
-               actionButton("subtract_blue", "", width = '100%', icon = icon("minus", lib = "font-awesome"))),
-        column(5, id="buttons",
-               h3("Blue", align = "center")),
-        column(3, id="buttons",
-               actionButton("add_blue", "", width = '100%', icon = icon("plus", lib = "font-awesome")))
-      ),
-      fluidRow(
-        column(3, id="buttons",
                actionButton("subtract_green", "", width = '100%', icon = icon("minus", lib = "font-awesome"))),
         column(5, id="buttons",
                h3("Green", align = "center")),
@@ -69,11 +53,19 @@ ui <- fluidPage(
       ),
       fluidRow(
         column(3, id="buttons",
-               actionButton("subtract_orange", "", width = '100%', icon = icon("minus", lib = "font-awesome"))),
+               actionButton("subtract_purple", "", width = '100%', icon = icon("minus", lib = "font-awesome"))),
         column(5, id="buttons",
-               h3("Orange", align = "center")),
+               h3("Purple", align = "center")),
         column(3, id="buttons",
-               actionButton("add_orange", "", width = '100%', icon = icon("plus", lib = "font-awesome")))
+               actionButton("add_purple", "", width = '100%', icon = icon("plus", lib = "font-awesome")))
+      ),
+      fluidRow(
+        column(3, id="buttons",
+               actionButton("subtract_red", "", width = '100%', icon = icon("minus", lib = "font-awesome"))),
+        column(5, id="buttons",
+               h3("Red", align = "center")),
+        column(3, id="buttons",
+               actionButton("add_red", "", width = '100%', icon = icon("plus", lib = "font-awesome")))
       ),
       fluidRow(
         column(12,
@@ -81,7 +73,7 @@ ui <- fluidPage(
       )
     ),
     mainPanel(
-      plotOutput("MnMPlot")
+      plotOutput("SkittlePlot")
     )
   )
 )
@@ -89,18 +81,14 @@ ui <- fluidPage(
 # Define server logic
 server <- function(input, output, session) {
   counter <- reactiveValues(
-    brown_counter = 0, 
-    blue_counter = 0,
+    purple_counter = 0,
     green_counter = 0,
     red_counter = 0,
     yellow_counter = 0,
     orange_counter = 0)
   
-  observeEvent(input$add_brown, {
-    counter$brown_counter <- counter$brown_counter + 1
-  })
-  observeEvent(input$add_blue, {
-    counter$blue_counter <- counter$blue_counter + 1
+  observeEvent(input$add_purple, {
+    counter$purple_counter <- counter$purple_counter + 1
   })
   observeEvent(input$add_green, {
     counter$green_counter <- counter$green_counter + 1
@@ -115,12 +103,8 @@ server <- function(input, output, session) {
     counter$orange_counter <- counter$orange_counter + 1
   })
   
-  
-  observeEvent(input$subtract_brown, {
-    counter$brown_counter <- counter$brown_counter - 1
-  })
-  observeEvent(input$subtract_blue, {
-    counter$blue_counter <- counter$blue_counter - 1
+  observeEvent(input$subtract_purple, {
+    counter$purple_counter <- counter$purple_counter - 1
   })
   observeEvent(input$subtract_green, {
     counter$green_counter <- counter$green_counter - 1
@@ -137,25 +121,23 @@ server <- function(input, output, session) {
   
   
   observeEvent(input$reset, {
-    counter$brown_counter <- 0
-    counter$blue_counter <- 0
+    counter$purple_counter <- 0
     counter$green_counter <- 0
     counter$yellow_counter <- 0
     counter$red_counter <- 0
     counter$orange_counter <- 0
   })
   
-  output$MnMPlot <- renderPlot({
-    mm_graph(br = counter$brown_counter,
-             bl = counter$blue_counter,
+  output$SkittlePlot <- renderPlot({
+    skittles_graph(
+             p = counter$purple_counter,
              g = counter$green_counter,
              y = counter$yellow_counter,
              r = counter$red_counter,
              o = counter$orange_counter)
   })
   
-  output$brown_count <- renderText({counter$brown_counter})
-  output$blue_count <- renderText({counter$blue_counter})
+  output$purple_count <- renderText({counter$purple_counter})
   output$green_count <- renderText({counter$green_counter})
   output$red_count <- renderText({counter$red_counter})
   output$yellow_count <- renderText({counter$yellow_counter})
